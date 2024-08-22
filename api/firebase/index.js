@@ -28,6 +28,7 @@ const postOrder = async (order) => {
         console.error("Error adding document: ", e);
       }
 };
+
 const getOrdersByDate = async (date) => {
   const startOfDay = new Date(date.setHours(0, 0, 0, 0));
   const endOfDay = new Date(date.setHours(23, 59, 59, 999));
@@ -51,4 +52,33 @@ const getOrdersByDate = async (date) => {
   }
 };
 
-export { postOrder, getOrdersByDate };
+// 총 주문 건수 가져오기 함수
+const getTotalOrderCount = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "orderList"));
+    return querySnapshot.size;
+  } catch (e) {
+    console.error("Error getting order count: ", e);
+    return 0;
+  }
+};
+
+// 총 주문 금액 가져오기 함수
+const getTotalOrderAmount = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "orderList"));
+    let totalAmount = 0;
+
+    querySnapshot.forEach((doc) => {
+      const order = doc.data();
+      totalAmount += order.totalPrice || 0;
+    });
+
+    return totalAmount;
+  } catch (e) {
+    console.error("Error getting total order amount: ", e);
+    return 0;
+  }
+};
+
+export { postOrder, getOrdersByDate, getTotalOrderCount, getTotalOrderAmount };
