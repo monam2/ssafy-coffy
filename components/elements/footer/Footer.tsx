@@ -1,8 +1,8 @@
 "use client"
-import React, {useEffect, useState} from "react";
-import {FaGithub, FaInstagram} from "react-icons/fa";
-import {SiMattermost} from "react-icons/si";
-import {getTotalOrderAmount, getTotalOrderCount} from "@/api/firebase";
+import React, { useEffect, useState } from "react";
+import { FaGithub, FaInstagram } from "react-icons/fa";
+import { SiMattermost } from "react-icons/si";
+import { getTotalOrderAmount, getTotalOrderCount } from "@/api/firebase";
 
 
 const Footer = () => {
@@ -11,7 +11,7 @@ const Footer = () => {
     const [totalAmount, setTotalAmount] = useState(0);
 
     const intervalChangeText = () => {
-        const intervalFunc = setInterval(()=>{
+        const intervalFunc = setInterval(() => {
             setFooterText(prevState => !prevState);
         }, 3000);
 
@@ -43,25 +43,25 @@ const Footer = () => {
     };
 
     useEffect(() => {
-        fetchTotalOrderCnt();
-        fetchTotalOrderPrice();
-        const intervalFunc = intervalChangeText();
+        // fetchTotalOrderCnt();
+        // fetchTotalOrderPrice();
+        // const intervalFunc = intervalChangeText();
 
-        return ()=>{
-            clearInterval(intervalFunc);
-        }
+        // return () => {
+        //     clearInterval(intervalFunc);
+        // }
     }, []);
 
     return (
         <div className="w-full h-16 flex justify-between bg-slate-200 dark:bg-slate-600">
-            <div className="flex h-full text-lg pl-10 items-center opacity-50 font-[Pretendard] font-bold ">
+            {/* <div className="flex h-full text-lg pl-10 items-center opacity-50 font-[Pretendard] font-bold ">
                 { (totalCnt > 0 || totalAmount > 0) && (
                     footerText ?
                         <span className="font-bold">누적 주문 수 {totalCnt} 건</span>
                         :
                         <span className="font-bold">총 {totalAmount.toLocaleString()} 원</span>
                 )}
-            </div>
+            </div> */}
             <div className=" h-16 flex justify-end pr-10 items-center gap-6">
                 <FaGithub
                     onClick={() => moveTo("github")}
