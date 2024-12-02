@@ -1,12 +1,20 @@
-import React, { memo } from "react";
+import React, { useState, useEffect } from "react";
 
 interface StatsProps {
-  footerText: boolean;
   totalCnt: number;
   totalAmount: number;
 }
 
-const Stats = ({ footerText, totalCnt, totalAmount }: StatsProps) => {
+const Stats: React.FC<StatsProps> = ({ totalCnt, totalAmount }) => {
+  const [footerText, setFooterText] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFooterText((prev) => !prev);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="flex h-full text-lg pl-10 items-center opacity-50 font-[Pretendard] font-bold">
       {(totalCnt > 0 || totalAmount > 0) &&
@@ -19,4 +27,4 @@ const Stats = ({ footerText, totalCnt, totalAmount }: StatsProps) => {
   );
 };
 
-export default memo(Stats);
+export default Stats;
