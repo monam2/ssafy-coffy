@@ -1,6 +1,8 @@
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ReactNode } from "react";
 import { Metadata } from "next";
+import ReactQueryProvider from "@/lib/reactQueryProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -28,22 +30,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        {/* React Query Provider 설정 */}
+        <ReactQueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
