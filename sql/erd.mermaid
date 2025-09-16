@@ -1,0 +1,89 @@
+erDiagram
+  users ||--o{ carts : has
+  users ||--o{ orders : places
+  users ||--o{ event_logs : writes
+  users ||--o{ menu_price_history : changes
+  users ||--o{ notifications : triggers
+  users ||--o{ orders : assigned_to
+
+  categories ||--o{ menus : group
+  menus ||--o{ cart_items : referenced_by
+  menus ||--o{ order_items : referenced_by
+  menus ||--o{ menu_price_history : versioned_by
+
+  carts ||--o{ cart_items : contains
+  orders ||--o{ order_items : contains
+
+  webhook_endpoints ||--o{ notifications : uses
+
+  users {
+    uuid id PK
+    text email
+    text role
+  }
+  categories {
+    smallserial id PK
+    text value
+  }
+  menus {
+    bigserial id PK
+    smallint category_id FK
+    text name
+    int price
+    bool only_ice
+    bool is_sold_out
+  }
+  menu_price_history {
+    bigserial id PK
+    bigint menu_id FK
+    int old_price
+    int new_price
+    uuid changed_by
+  }
+  carts {
+    uuid id PK
+    uuid user_id FK
+    text status
+  }
+  cart_items {
+    bigserial id PK
+    uuid cart_id FK
+    bigint menu_id FK
+    int quantity
+    int unit_price
+  }
+  orders {
+    uuid id PK
+    uuid user_id FK
+    text status
+    int total_price
+    text payment_method
+    text cancelled_reason
+    uuid assigned_to
+  }
+  order_items {
+    bigserial id PK
+    uuid order_id FK
+    bigint menu_id
+    text name_snapshot
+    int price_snapshot
+    int quantity
+  }
+  event_logs {
+    bigserial id PK
+    uuid user_id
+    text event_type
+    text level
+  }
+  webhook_endpoints {
+    bigserial id PK
+    text name
+    text channel
+    text url
+  }
+  notifications {
+    bigserial id PK
+    bigint endpoint_id FK
+    text event_type
+    text status
+  }
