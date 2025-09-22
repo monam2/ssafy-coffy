@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { login, logout } from "./service";
-import { hashPassword } from "@/shared/lib/crypto";
+import { hashPassword } from "@/shared/lib/auth/crypto";
 
 import { LoginState } from "../model/types";
 import { loginSchema } from "../model/schema";

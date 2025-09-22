@@ -1,17 +1,11 @@
-import { cookies } from "next/headers";
 import Providers from "@/app/_providers";
-import { LoginUser } from "@/entities/user/model/atom";
+import { getUserSnapshot } from "@/shared/lib/auth/session";
 import AuthHydrator from "@/entities/user/model/AuthHydrator";
 
 import Header from "@/widget/ui/Header";
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
-  let initialUser: LoginUser = null;
-
-  const cookieStore = await cookies();
-  const snapShot = cookieStore.get("auth_user")?.value;
-
-  if (snapShot) initialUser = JSON.parse(snapShot);
+  const initialUser = (await getUserSnapshot("auth_user")) ?? null;
 
   return (
     <html lang="ko" suppressHydrationWarning>
