@@ -1,0 +1,55 @@
+/* styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import 'react-toastify/dist/ReactToastify.css';
+
+
+@font-face {
+  font-family: "Moyamoya";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/Cafe24Moyamoya-Regular-v1.0.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BitBit";
+  font-style: normal;
+  font-weight: 400;
+  src: url("//cdn.df.nexon.com/img/common/font/DNFBitBitv2.otf")
+    format("opentype");
+}
+
+:root {
+  --text-color-light: #000000;
+  --text-color-dark: #ffffff;
+  --text-color-lightblue: #7eaffe;
+}
+
+[data-theme="dark"] {
+  --text-color: var(--text-color-dark);
+  --point-color: var(--text-color-lightblue);
+}
+
+[data-theme="light"] {
+  --text-color: var(--text-color-light);
+  --point-color: var(--text-color-lightblue);
+}
+
+html {
+  height: calc(100% - 64px - 64px);
+  scrollbar-width: none;
+}
+
+body {
+  height: 100%;
+}
