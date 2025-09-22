@@ -1,51 +1,30 @@
-import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ReactNode } from "react";
-import { Metadata } from "next";
-import ReactQueryProvider from "@/lib/reactQueryProvider";
+import { cookies } from "next/headers";
+import Providers from "@/app/_providers";
+import { LoginUser } from "@/entities/user/model/atom";
+import AuthHydrator from "@/entities/user/model/AuthHydrator";
 
-export const metadata: Metadata = {
-  title: {
-    default: "싸피코피",
-    template: "%s | 싸피코피",
-  },
-  description: "광주캠퍼스에서 커피가 마시고 십허요.",
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
-  },
-  openGraph: {
-    title: "싸피코피 SSAFY-COFFY",
-    description: "광주캠퍼스에서 커피가 마시고 십허요.",
-    images: [
-      {
-        url: "https://ssafy-cofy.vercel.app/img/logo/thumbnail.png",
-        width: 800,
-        height: 600,
-        alt: "thumbnail",
-        type: "image/png",
-      },
-    ],
-  },
-};
+import Header from "@/widget/ui/Header";
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+  let initialUser: LoginUser = null;
+
+  const cookieStore = await cookies();
+  const snapShot = cookieStore.get("auth_user")?.value;
+
+  if (snapShot) initialUser = JSON.parse(snapShot);
+
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <body>
-        {/* React Query Provider 설정 */}
-        <ReactQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+        <Providers>
+          <AuthHydrator initialUser={initialUser}>
+            <Header />
             {children}
-          </ThemeProvider>
-        </ReactQueryProvider>
+          </AuthHydrator>
+        </Providers>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
