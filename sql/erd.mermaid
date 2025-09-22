@@ -1,89 +1,146 @@
 erDiagram
-  users ||--o{ carts : has
-  users ||--o{ orders : places
-  users ||--o{ event_logs : writes
-  users ||--o{ menu_price_history : changes
-  users ||--o{ notifications : triggers
-  users ||--o{ orders : assigned_to
-
-  categories ||--o{ menus : group
-  menus ||--o{ cart_items : referenced_by
-  menus ||--o{ order_items : referenced_by
-  menus ||--o{ menu_price_history : versioned_by
-
-  carts ||--o{ cart_items : contains
-  orders ||--o{ order_items : contains
-
-  webhook_endpoints ||--o{ notifications : uses
-
-  users {
-    uuid id PK
+  USERS {
+    uuid id
     text email
-    text role
-  }
-  categories {
-    smallserial id PK
-    text value
-  }
-  menus {
-    bigserial id PK
-    smallint category_id FK
     text name
-    int price
-    bool only_ice
-    bool is_sold_out
+    text role
+    text discord_webhook_url
+    boolean is_active
+    timestamptz created_at
+    timestamptz updated_at
+    text password
   }
-  menu_price_history {
-    bigserial id PK
-    bigint menu_id FK
-    int old_price
-    int new_price
+
+  CATEGORIES {
+    smallint id
+    text name
+    text value
+    smallint sort_order
+    boolean is_active
+    timestamptz created_at
+  }
+
+  MENUS {
+    bigint id
+    smallint category_id
+    text name
+    text description
+    integer price
+    text img
+    boolean only_ice
+    boolean is_sold_out
+    boolean is_active
+    jsonb tags
+    timestamptz created_at
+    timestamptz updated_at
+  }
+
+  MENU_PRICE_HISTORY {
+    bigint id
+    bigint menu_id
+    integer old_price
+    integer new_price
     uuid changed_by
+    timestamptz changed_at
   }
-  carts {
-    uuid id PK
-    uuid user_id FK
+
+  CARTS {
+    uuid id
+    uuid user_id
     text status
+    timestamptz created_at
+    timestamptz updated_at
   }
-  cart_items {
-    bigserial id PK
-    uuid cart_id FK
-    bigint menu_id FK
-    int quantity
-    int unit_price
+
+  CART_ITEMS {
+    bigint id
+    uuid cart_id
+    bigint menu_id
+    integer quantity
+    integer unit_price
+    boolean is_hot
+    boolean is_shot
+    boolean is_whip
+    boolean is_syrup
+    boolean is_milk
+    boolean is_peorl
   }
-  orders {
-    uuid id PK
-    uuid user_id FK
+
+  ORDERS {
+    uuid id
+    uuid user_id
+    integer total_price
     text status
-    int total_price
     text payment_method
+    text external_id
+    text admin_note
     text cancelled_reason
     uuid assigned_to
+    timestamptz paid_at
+    timestamptz created_at
+    timestamptz updated_at
   }
-  order_items {
-    bigserial id PK
-    uuid order_id FK
+
+  ORDER_ITEMS {
+    bigint id
+    uuid order_id
     bigint menu_id
     text name_snapshot
-    int price_snapshot
-    int quantity
+    integer price_snapshot
+    integer quantity
+    boolean is_hot
+    boolean is_shot
+    boolean is_whip
+    boolean is_syrup
+    boolean is_milk
+    boolean is_peorl
   }
-  event_logs {
-    bigserial id PK
-    uuid user_id
-    text event_type
-    text level
-  }
-  webhook_endpoints {
-    bigserial id PK
+
+  WEBHOOK_ENDPOINTS {
+    bigint id
     text name
     text channel
     text url
+    boolean is_active
+    timestamptz created_at
   }
-  notifications {
-    bigserial id PK
-    bigint endpoint_id FK
+
+  NOTIFICATIONS {
+    bigint id
+    bigint endpoint_id
     text event_type
+    jsonb payload
     text status
+    integer response_code
+    timestamptz created_at
+    timestamptz sent_at
   }
+
+  EVENT_LOGS {
+    bigint id
+    uuid user_id
+    text event_type
+    text entity_type
+    text entity_id
+    text level
+    jsonb payload
+    text request_id
+    text ip
+    timestamptz created_at
+  }
+
+  USERS ||--o{ CARTS : user_id
+  CARTS ||--o{ CART_ITEMS : cart_id
+  MENUS ||--o{ CART_ITEMS : menu_id
+
+  CATEGORIES ||--o{ MENUS : category_id
+  MENUS ||--o{ MENU_PRICE_HISTORY : menu_id
+  USERS ||--o{ MENU_PRICE_HISTORY : changed_by
+
+  USERS ||--o{ ORDERS : user_id
+  USERS ||--o{ ORDERS : assigned_to
+  ORDERS ||--o{ ORDER_ITEMS : order_id
+  MENUS ||--o{ ORDER_ITEMS : menu_id
+
+  USERS ||--o{ EVENT_LOGS : user_id
+  WEBHOOK_ENDPOINTS ||--o{ NOTIFICATIONS : endpoint_id

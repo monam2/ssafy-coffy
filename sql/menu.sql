@@ -92,10 +92,10 @@ with v as (
       ('coffee','빅포즈 아메리카노(946ml, 4샷)',3000,'https://composecoffee.com/files/thumbnails/253/097/1515x2083.crop.jpg?t=1733793587',false)
   ) as t(category_value, name, price, img, only_ice)
 )
-insert into app.menus (category_id, name, price, img, only_ice)
+insert into public.menus (category_id, name, price, img, only_ice)
 select c.id, v.name, v.price, v.img, v.only_ice
 from v
-join app.categories c
+join public.categories c
   on c.value = trim(v.category_value)
 on conflict (category_id, name) do update
 set price = excluded.price,

@@ -1,4 +1,4 @@
-insert into app.categories(name, value, sort_order)
+insert into public.categories(name, value, sort_order)
 values 
   ('커피', 'coffee', 1),
   ('더치커피', 'dutchcoffee', 2),

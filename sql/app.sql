@@ -1,232 +1,147 @@
--- Extensions
-create extension if not exists pgcrypto;
-create extension if not exists citext;
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
 
--- Schema
-create schema if not exists app;
-
--- Enums
-create type app.order_status as enum ('pending', 'paid', 'cancelled');
-
--- Tables
-create table if not exists app.users (
-  id uuid primary key references auth.users(id) on delete cascade,
-  email citext unique not null,
-  display_name text,
-  role text not null default 'user',
-  discord_webhook_url text,
-  is_active boolean not null default true,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+CREATE TABLE public.cart_items (
+  id bigint NOT NULL DEFAULT nextval('cart_items_id_seq'::regclass),
+  cart_id uuid NOT NULL,
+  menu_id bigint NOT NULL,
+  quantity integer NOT NULL DEFAULT 1 CHECK (quantity > 0),
+  unit_price integer NOT NULL CHECK (unit_price >= 0),
+  is_hot boolean NOT NULL DEFAULT false,
+  is_shot boolean NOT NULL DEFAULT false,
+  is_whip boolean NOT NULL DEFAULT false,
+  is_syrup boolean NOT NULL DEFAULT false,
+  is_milk boolean NOT NULL DEFAULT false,
+  is_peorl boolean NOT NULL DEFAULT false,
+  only_ice boolean NOT NULL DEFAULT false,
+  CONSTRAINT cart_items_pkey PRIMARY KEY (id),
+  CONSTRAINT cart_items_menu_id_fkey FOREIGN KEY (menu_id) REFERENCES public.menus(id),
+  CONSTRAINT cart_items_cart_id_fkey FOREIGN KEY (cart_id) REFERENCES public.carts(id)
 );
-
-create table if not exists app.categories (
-  id smallserial primary key,
-  name text not null,
-  value text not null unique,
-  sort_order smallint not null default 0,
-  is_active boolean not null default true,
-  created_at timestamptz not null default now()
+CREATE TABLE public.carts (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  status text NOT NULL CHECK (status = ANY (ARRAY['active'::text, 'ordered'::text, 'abandoned'::text])),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT carts_pkey PRIMARY KEY (id),
+  CONSTRAINT carts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
 );
-
-create table if not exists app.menus (
-  id bigserial primary key,
-  category_id smallint not null references app.categories(id),
-  name text not null,
+CREATE TABLE public.categories (
+  id smallint NOT NULL DEFAULT nextval('categories_id_seq'::regclass),
+  name text NOT NULL,
+  value text NOT NULL UNIQUE,
+  sort_order smallint NOT NULL DEFAULT 0,
+  is_active boolean NOT NULL DEFAULT true,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT categories_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.event_logs (
+  id bigint NOT NULL DEFAULT nextval('event_logs_id_seq'::regclass),
+  user_id uuid,
+  event_type text NOT NULL,
+  entity_type text,
+  entity_id text,
+  level text NOT NULL DEFAULT 'info'::text,
+  payload jsonb NOT NULL DEFAULT '{}'::jsonb,
+  request_id text,
+  ip text,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT event_logs_pkey PRIMARY KEY (id),
+  CONSTRAINT event_logs_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.menu_price_history (
+  id bigint NOT NULL DEFAULT nextval('menu_price_history_id_seq'::regclass),
+  menu_id bigint NOT NULL,
+  old_price integer NOT NULL,
+  new_price integer NOT NULL,
+  changed_by uuid,
+  changed_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT menu_price_history_pkey PRIMARY KEY (id),
+  CONSTRAINT menu_price_history_menu_id_fkey FOREIGN KEY (menu_id) REFERENCES public.menus(id),
+  CONSTRAINT menu_price_history_changed_by_fkey FOREIGN KEY (changed_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.menus (
+  id bigint NOT NULL DEFAULT nextval('menus_id_seq'::regclass),
+  category_id smallint NOT NULL,
+  name text NOT NULL,
   description text,
-  price integer not null check (price >= 0),
+  price integer NOT NULL CHECK (price >= 0),
   img text,
-  only_ice boolean not null default false,
-  is_sold_out boolean not null default false,
-  is_active boolean not null default true,
-  tags jsonb not null default '{}'::jsonb,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  unique (category_id, name)
+  only_ice boolean NOT NULL DEFAULT false,
+  is_sold_out boolean NOT NULL DEFAULT false,
+  is_active boolean NOT NULL DEFAULT true,
+  tags jsonb NOT NULL DEFAULT '{}'::jsonb,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT menus_pkey PRIMARY KEY (id),
+  CONSTRAINT menus_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.categories(id)
 );
-
-create table if not exists app.menu_price_history (
-  id bigserial primary key,
-  menu_id bigint not null references app.menus(id) on delete cascade,
-  old_price integer not null,
-  new_price integer not null,
-  changed_by uuid null references app.users(id),
-  changed_at timestamptz not null default now()
+CREATE TABLE public.notifications (
+  id bigint NOT NULL DEFAULT nextval('notifications_id_seq'::regclass),
+  endpoint_id bigint NOT NULL,
+  event_type text NOT NULL,
+  payload jsonb NOT NULL DEFAULT '{}'::jsonb,
+  status text NOT NULL DEFAULT 'queued'::text,
+  response_code integer,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  sent_at timestamp with time zone,
+  CONSTRAINT notifications_pkey PRIMARY KEY (id),
+  CONSTRAINT notifications_endpoint_id_fkey FOREIGN KEY (endpoint_id) REFERENCES public.webhook_endpoints(id)
 );
-
-create table if not exists app.carts (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references app.users(id) on delete cascade,
-  status text not null check (status in ('active','ordered','abandoned')),
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+CREATE TABLE public.order_items (
+  id bigint NOT NULL DEFAULT nextval('order_items_id_seq'::regclass),
+  order_id uuid NOT NULL,
+  menu_id bigint,
+  name_snapshot text NOT NULL,
+  price_snapshot integer NOT NULL CHECK (price_snapshot >= 0),
+  quantity integer NOT NULL DEFAULT 1 CHECK (quantity > 0),
+  is_hot boolean NOT NULL DEFAULT false,
+  is_shot boolean NOT NULL DEFAULT false,
+  is_whip boolean NOT NULL DEFAULT false,
+  is_syrup boolean NOT NULL DEFAULT false,
+  is_milk boolean NOT NULL DEFAULT false,
+  is_peorl boolean NOT NULL DEFAULT false,
+  only_ice boolean NOT NULL DEFAULT false,
+  CONSTRAINT order_items_pkey PRIMARY KEY (id),
+  CONSTRAINT order_items_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id),
+  CONSTRAINT order_items_menu_id_fkey FOREIGN KEY (menu_id) REFERENCES public.menus(id)
 );
-create unique index if not exists carts_user_active_unique
-  on app.carts(user_id) where status = 'active';
-
-create table if not exists app.cart_items (
-  id bigserial primary key,
-  cart_id uuid not null references app.carts(id) on delete cascade,
-  menu_id bigint not null references app.menus(id),
-  quantity integer not null default 1 check (quantity > 0),
-  unit_price integer not null check (unit_price >= 0),
-  is_hot boolean not null default false,
-  is_shot boolean not null default false,
-  is_whip boolean not null default false,
-  is_syrup boolean not null default false,
-  is_milk boolean not null default false,
-  is_peorl boolean not null default false,
-  only_ice boolean not null default false
+CREATE TABLE public.orders (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  total_price integer NOT NULL CHECK (total_price >= 0),
+  status USER-DEFINED NOT NULL DEFAULT 'pending'::order_status,
+  payment_method text,
+  external_id text,
+  admin_note text,
+  cancelled_reason text,
+  assigned_to uuid,
+  paid_at timestamp with time zone,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT orders_pkey PRIMARY KEY (id),
+  CONSTRAINT orders_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id),
+  CONSTRAINT orders_assigned_to_fkey FOREIGN KEY (assigned_to) REFERENCES public.users(id)
 );
-create index if not exists cart_items_cart_id_idx on app.cart_items(cart_id);
-
-create table if not exists app.orders (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references app.users(id) on delete cascade,
-  total_price integer not null check (total_price >= 0),
-  status app.order_status not null default 'pending',
-  payment_method text null,
-  external_id text null,
-  admin_note text null,
-  cancelled_reason text null,
-  assigned_to uuid null references app.users(id),
-  paid_at timestamptz null,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+CREATE TABLE public.users (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  email text NOT NULL UNIQUE,
+  name text NOT NULL,
+  role text NOT NULL DEFAULT 'user'::text,
+  discord_webhook_url text,
+  is_active boolean NOT NULL DEFAULT true,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  password text NOT NULL DEFAULT '''''::text'::text,
+  CONSTRAINT users_pkey PRIMARY KEY (id)
 );
-create index if not exists orders_created_at_idx on app.orders(created_at desc);
-create index if not exists orders_user_created_idx on app.orders(user_id, created_at desc);
-create index if not exists orders_status_idx on app.orders(status);
-create index if not exists orders_assigned_idx on app.orders(assigned_to);
-
-create table if not exists app.order_items (
-  id bigserial primary key,
-  order_id uuid not null references app.orders(id) on delete cascade,
-  menu_id bigint null references app.menus(id),
-  name_snapshot text not null,
-  price_snapshot integer not null check (price_snapshot >= 0),
-  quantity integer not null default 1 check (quantity > 0),
-  is_hot boolean not null default false,
-  is_shot boolean not null default false,
-  is_whip boolean not null default false,
-  is_syrup boolean not null default false,
-  is_milk boolean not null default false,
-  is_peorl boolean not null default false,
-  only_ice boolean not null default false
+CREATE TABLE public.webhook_endpoints (
+  id bigint NOT NULL DEFAULT nextval('webhook_endpoints_id_seq'::regclass),
+  name text NOT NULL,
+  channel text NOT NULL DEFAULT 'discord'::text,
+  url text NOT NULL,
+  is_active boolean NOT NULL DEFAULT true,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT webhook_endpoints_pkey PRIMARY KEY (id)
 );
-create index if not exists order_items_order_id_idx on app.order_items(order_id);
-
-create table if not exists app.event_logs (
-  id bigserial primary key,
-  user_id uuid null references app.users(id),
-  event_type text not null,
-  entity_type text null,
-  entity_id text null,
-  level text not null default 'info',
-  payload jsonb not null default '{}'::jsonb,
-  request_id text null,
-  ip text null,
-  created_at timestamptz not null default now()
-);
-create index if not exists event_logs_created_idx on app.event_logs(created_at desc);
-create index if not exists event_logs_event_type_idx on app.event_logs(event_type);
-create index if not exists event_logs_level_idx on app.event_logs(level);
-
-create table if not exists app.webhook_endpoints (
-  id bigserial primary key,
-  name text not null,
-  channel text not null default 'discord',
-  url text not null,
-  is_active boolean not null default true,
-  created_at timestamptz not null default now()
-);
-
-create table if not exists app.notifications (
-  id bigserial primary key,
-  endpoint_id bigint not null references app.webhook_endpoints(id) on delete cascade,
-  event_type text not null,
-  payload jsonb not null default '{}'::jsonb,
-  status text not null default 'queued',
-  response_code integer null,
-  created_at timestamptz not null default now(),
-  sent_at timestamptz null
-);
-create index if not exists notifications_created_idx on app.notifications(created_at desc);
-create index if not exists notifications_status_idx on app.notifications(status);
-
--- updated_at triggers
-create or replace function app.set_updated_at() returns trigger language plpgsql as $$
-begin
-  new.updated_at = now();
-  return new;
-end$$;
-
-drop trigger if exists set_updated_at_users on app.users;
-create trigger set_updated_at_users before update on app.users
-for each row execute function app.set_updated_at();
-
-drop trigger if exists set_updated_at_menus on app.menus;
-create trigger set_updated_at_menus before update on app.menus
-for each row execute function app.set_updated_at();
-
-drop trigger if exists set_updated_at_carts on app.carts;
-create trigger set_updated_at_carts before update on app.carts
-for each row execute function app.set_updated_at();
-
-drop trigger if exists set_updated_at_orders on app.orders;
-create trigger set_updated_at_orders before update on app.orders
-for each row execute function app.set_updated_at();
-
--- menu price history trigger
-create or replace function app.log_menu_price_change() returns trigger language plpgsql as $$
-declare
-  jwt jsonb;
-  uid uuid;
-begin
-  if (old.price is distinct from new.price) then
-    begin
-      jwt := nullif(current_setting('request.jwt.claims', true), '')::jsonb;
-      uid := (jwt->>'sub')::uuid;
-    exception when others then
-      uid := null;
-    end;
-    insert into app.menu_price_history(menu_id, old_price, new_price, changed_by)
-    values (old.id, old.price, new.price, uid);
-  end if;
-  return new;
-end$$;
-
-drop trigger if exists log_menu_price_change on app.menus;
-create trigger log_menu_price_change
-after update of price on app.menus
-for each row execute function app.log_menu_price_change();
-
--- order status change trigger
-create or replace function app.log_and_queue_on_order_status_change() returns trigger language plpgsql as $$
-begin
-  if (old.status is distinct from new.status) then
-    insert into app.event_logs(user_id, event_type, entity_type, entity_id, level, payload)
-    values (
-      new.user_id,
-      'order.status_changed',
-      'order',
-      new.id::text,
-      'info',
-      jsonb_build_object('from', old.status, 'to', new.status)
-    );
-
-    insert into app.notifications(endpoint_id, event_type, payload, status)
-    select id,
-           'order.status_changed',
-           jsonb_build_object('order_id', new.id, 'from', old.status, 'to', new.status),
-           'queued'
-    from app.webhook_endpoints
-    where is_active = true;
-  end if;
-  return new;
-end$$;
-
-drop trigger if exists log_and_queue_on_order_status_change on app.orders;
-create trigger log_and_queue_on_order_status_change
-after update of status on app.orders
-for each row execute function app.log_and_queue_on_order_status_change();
