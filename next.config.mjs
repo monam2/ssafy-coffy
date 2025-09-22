@@ -3,6 +3,7 @@ import bundleAnalyzer from "@next/bundle-analyzer";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // assetPrefix: '.',
+  transpilePackages: ["jotai-devtools"],
   images: {
     remotePatterns: [
       {
