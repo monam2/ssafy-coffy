@@ -1,7 +1,5 @@
 "use client";
 
-import "@/app/globals.css";
-
 import {
   ThemeProvider as NextThemesProvider,
   ThemeProviderProps,
