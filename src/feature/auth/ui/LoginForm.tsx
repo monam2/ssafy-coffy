@@ -4,6 +4,7 @@ import { useSetAtom } from "jotai";
 import { loginAction } from "../api/action";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useActionState } from "react";
+<<<<<<< HEAD
 import { LoginUser, loginUserAtom } from "@/entities/user/model/atom";
 
 import { Loader2 } from "lucide-react";
@@ -11,6 +12,14 @@ import { Button, Input } from "@/shared/ui";
 import { LoginState } from "@/feature/auth/model/types";
 
 const initialState: LoginState = { ok: false };
+=======
+
+import { Loader2 } from "lucide-react";
+import { Button, Input } from "@/shared/ui";
+import { LoginStatus, User } from "@/shared/types";
+
+const initialState: LoginStatus = { ok: false };
+>>>>>>> 6bfc265 (fix(auth): 유효성 검사 로직 오타 수정)
 
 const LoginForm = ({ header }: { header: React.ReactNode }) => {
   const router = useRouter();
@@ -18,7 +27,11 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
+<<<<<<< HEAD
   const setUser = useSetAtom(loginUserAtom);
+=======
+  const setUser = useSetAtom(userState);
+>>>>>>> 6bfc265 (fix(auth): 유효성 검사 로직 오타 수정)
   const [state, formAction, isPending] = useActionState(
     loginAction,
     initialState
@@ -29,7 +42,11 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
     else if (state?.fieldErrors?.password?.length) passwordRef.current?.focus();
 
     if (state?.ok) {
+<<<<<<< HEAD
       setUser(state.data as LoginUser);
+=======
+      setUser(state.data as User);
+>>>>>>> 6bfc265 (fix(auth): 유효성 검사 로직 오타 수정)
       router.replace("/menu");
     }
   }, [state, router, setUser]);
