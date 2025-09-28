@@ -11,7 +11,7 @@ declare global {
       NEXT_PUBLIC_NEXTAPI_URL: string;
 
       NEXT_PUBLIC_SUPABASE_URL: string;
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: string;
     }
   }
 }

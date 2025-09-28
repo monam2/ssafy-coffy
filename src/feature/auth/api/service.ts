@@ -13,12 +13,17 @@ import { PostgrestSingleResponse } from "@supabase/supabase-js";
 export const findUserByEmail = async (email: string) => {
   const supabase = await getServerClient();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .schema("public")
     .from("users")
     .select("id, email, name, role, password, updated_at")
     .eq("email", email)
     .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
   return data;
 };
 
@@ -40,12 +45,16 @@ export const createUser = async (params: LoginReqDto) => {
     role: "USER",
   };
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .schema("public")
     .from("users")
     .insert(newUser)
     .select("id, email, name, role, updated_at")
     .single();
+
+  if (error) {
+    throw error;
+  }
 
   return data;
 };

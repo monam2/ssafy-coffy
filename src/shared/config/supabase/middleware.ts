@@ -51,7 +51,6 @@ export async function updateSession(request: NextRequest) {
         request.nextUrl.pathname === p || request.nextUrl.pathname.startsWith(p)
     ) &&
     !request.nextUrl.pathname.startsWith("/_next") &&
-    !request.nextUrl.pathname.startsWith("/api") &&
     !request.nextUrl.pathname.startsWith("/assets") &&
     !request.nextUrl.pathname.startsWith("/static") &&
     request.method !== "OPTIONS" &&
