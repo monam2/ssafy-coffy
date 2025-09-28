@@ -15,7 +15,7 @@ export const metadata = buildMetadata({
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <body>
         {/* React Query Provider 설정 */}
         <ReactQueryProvider>
