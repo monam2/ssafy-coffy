@@ -2164,7 +2164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cmdk@npm:^1.0.0":
+"cmdk@npm:^1.0.6":
   version: 1.1.1
   resolution: "cmdk@npm:1.1.1"
   dependencies:
@@ -4026,12 +4026,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.399.0":
-  version: 0.399.0
-  resolution: "lucide-react@npm:0.399.0"
+"lucide-react@npm:^0.466.0":
+  version: 0.466.0
+  resolution: "lucide-react@npm:0.466.0"
   peerDependencies:
-    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/49b97b65b8f225d4e93b18e66e5b2c8ce67a6cd7a90c589c6492b26063cec565a3d8b18b934fb35de01d9a15e1f52b2f8767b306b0a580d75a3c18d306e362be
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
+  checksum: 10c0/75fa1c85fc12d506986fc5129d05cf45ece211dbeda80405469f57d54c282b1ddf361eda6b949047945759a8b1e4df59a2c4f9097aeea69ca7ad575f98731548
   languageName: node
   linkType: hard
 
@@ -4245,13 +4245,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-themes@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "next-themes@npm:0.3.0"
+"next-themes@npm:^0.4.6":
+  version: 0.4.6
+  resolution: "next-themes@npm:0.4.6"
   peerDependencies:
-    react: ^16.8 || ^17 || ^18
-    react-dom: ^16.8 || ^17 || ^18
-  checksum: 10c0/72bd670ad6b9f547dc18cece340dfd1ac41e3e7b37eb321d4767db90bfa2c239f937011cd0efe35ca0081f1ea260051bc0868808ef39b0fbff2ddefd7146cec6
+    react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+  checksum: 10c0/83590c11d359ce7e4ced14f6ea9dd7a691d5ce6843fe2dc520fc27e29ae1c535118478d03e7f172609c41b1ef1b8da6b8dd2d2acd6cd79cac1abbdbd5b99f2c4
   languageName: node
   linkType: hard
 
@@ -5446,14 +5446,14 @@ __metadata:
     bcrypt: "npm:^6.0.0"
     class-variance-authority: "npm:^0.7.0"
     clsx: "npm:^2.1.1"
-    cmdk: "npm:^1.0.0"
+    cmdk: "npm:^1.0.6"
     eslint: "npm:^8"
     eslint-config-next: "npm:^15.5.3"
     jotai: "npm:^2.14.0"
     jotai-devtools: "npm:^0.13.0"
-    lucide-react: "npm:^0.399.0"
+    lucide-react: "npm:^0.466.0"
     next: "npm:^15.5.3"
-    next-themes: "npm:^0.3.0"
+    next-themes: "npm:^0.4.6"
     postcss: "npm:^8"
     react: "npm:^19.1.1"
     react-copy-to-clipboard: "npm:^5.1.0"
