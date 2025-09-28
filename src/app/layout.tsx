@@ -1,26 +1,34 @@
 import "@/app/globals.css";
+import { ReactNode } from "react";
+import ThemeProvider from "@/app/_providers/ThemeProvider";
+import ReactQueryProvider from "@/app/_providers/QueryProvider";
+import buildMetadata from "@/shared/config/seo";
 
-import Providers from "@/app/_providers";
-import { getUserSnapshot } from "@/shared/lib/auth/session";
-import AuthHydrator from "@/entities/user/model/AuthHydrator";
+export const metadata = buildMetadata({
+  title: {
+    default: "싸피코피",
+    template: "%s | 싸피코피",
+  },
+  description: "광주캠퍼스에서 커피가 마시고 십허요.",
+  ogImage: "/img/logo/thumbnail.png",
+});
 
-import Header from "@/widget/ui/Header";
-
-const RootLayout = async ({ children }: { children: React.ReactNode }) => {
-  const initialUser = (await getUserSnapshot("auth_user")) ?? null;
-
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="ko">
       <body>
-        <Providers>
-          <AuthHydrator initialUser={initialUser}>
-            <Header />
+        {/* React Query Provider 설정 */}
+        <ReactQueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             {children}
-          </AuthHydrator>
-        </Providers>
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}
