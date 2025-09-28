@@ -35,8 +35,8 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
   }, [state, router, setUser]);
 
   const nameInvalid = !!state?.fieldErrors?.name?.length;
-  const emailInvalid = !state?.fieldErrors?.email?.length;
-  const passwordInvalid = !state?.fieldErrors?.password?.length;
+  const emailInvalid = !!state?.fieldErrors?.email?.length;
+  const passwordInvalid = !!state?.fieldErrors?.password?.length;
 
   return (
     <>
