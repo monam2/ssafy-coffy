@@ -1,14 +1,14 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { findUserByEmail, createUser } from "./service";
-
-import { LoginState } from "../model/types";
-import { LoginResDto } from "./dto";
-import { loginSchema } from "../model/schema";
-import { verifyPassword } from "@/shared/lib/auth/crypto";
-import { setUserSnapshot } from "@/shared/lib/auth/session";
 import { redirect } from "next/navigation";
+
+import { LoginResDto } from "@/feature/auth/api/dto";
+import { LoginState } from "@/feature/auth/model/types";
+import { loginSchema } from "@/feature/auth/model/schema";
+import { findUserByEmail, createUser } from "@/feature/auth/api/service";
+
+import { setUserSnapshot } from "@/shared/lib/auth/session";
 
 const COOKIE_NAME = "auth_user";
 
@@ -60,12 +60,6 @@ export const loginAction = async (
     }
 
     return { ok: true, data: safeUser };
-  } else {
-    // 기존 사용자 PW 검증
-    const isValidPw = await verifyPassword(password, existingUser.password);
-    if (!isValidPw) {
-      return { ok: false, message: "비밀번호가 일치하지 않습니다." };
-    }
   }
 
   const safeUser: LoginResDto = {

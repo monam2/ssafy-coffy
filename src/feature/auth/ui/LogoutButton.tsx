@@ -1,15 +1,15 @@
 "use client";
 
 import { useSetAtom } from "jotai";
-import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
-import { logoutAction } from "../api/action";
-import { useActionState, useEffect } from "react";
-import { loginUserAtom } from "@/entities/user/model/atom";
-
-import { Button } from "@/shared/ui";
 import { Loader2 } from "lucide-react";
 import { LuLogOut } from "react-icons/lu";
+import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
+
+import { loginUserAtom } from "@/entities/user/model/atom";
+import { logoutAction } from "@/feature/auth/api/action";
+import { Button } from "@/shared/ui";
 
 const LogoutButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   const router = useRouter();
