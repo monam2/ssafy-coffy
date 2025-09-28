@@ -4,7 +4,6 @@ import bundleAnalyzer from "@next/bundle-analyzer";
 const nextConfig = {
   // assetPrefix: '.',
   transpilePackages: ["jotai-devtools"],
-  exclude: ["src_legacy"],
   images: {
     remotePatterns: [
       {
