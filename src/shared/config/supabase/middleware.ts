@@ -3,7 +3,9 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
-    request,
+    request: {
+      headers: request.headers,
+    },
   });
 
   const supabase = createServerClient(
@@ -19,7 +21,9 @@ export async function updateSession(request: NextRequest) {
             request.cookies.set(name, value)
           );
           supabaseResponse = NextResponse.next({
-            request,
+            request: {
+              headers: request.headers,
+            },
           });
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
@@ -35,9 +39,23 @@ export async function updateSession(request: NextRequest) {
 
   if (
     !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth") &&
-    !request.nextUrl.pathname.startsWith("/error")
+    ![
+      "/login",
+      "/auth",
+      "/error",
+      "/favicon.ico",
+      "/robots.txt",
+      "/sitemap.xml",
+    ].some(
+      (p) =>
+        request.nextUrl.pathname === p || request.nextUrl.pathname.startsWith(p)
+    ) &&
+    !request.nextUrl.pathname.startsWith("/_next") &&
+    !request.nextUrl.pathname.startsWith("/api") &&
+    !request.nextUrl.pathname.startsWith("/assets") &&
+    !request.nextUrl.pathname.startsWith("/static") &&
+    request.method !== "OPTIONS" &&
+    request.method !== "HEAD"
   ) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
