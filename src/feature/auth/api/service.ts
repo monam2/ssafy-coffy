@@ -7,33 +7,34 @@ import { PostgrestSingleResponse } from "@supabase/supabase-js";
 
 /** 유저 조회
  * @param email 이메일
- * @returns 유저 정보
+ * @returns 유저 정보 or null
  * @description 이메일로 유저 정보를 조회합니다. 결과가 없다면 createUser 진행
  */
-export const findUserByEmail = async (email: string) => {
+export const findUserByEmail = async (email: string): Promise<User | null> => {
   const supabase = await getServerClient();
 
+  const normalizedEmail = email.trim().toLowerCase();
   const { data, error } = await supabase
     .schema("public")
     .from("users")
-    .select("id, email, name, role, password, updated_at")
-    .eq("email", email)
+    .select("id, email, name, role, updated_at")
+    .eq("email", normalizedEmail)
     .maybeSingle();
 
   if (error) {
     throw error;
   }
 
-  return data;
+  return data ?? null;
 };
 
 /**
  * 유저 생성
  * @param params
- * @returns 유저 정보(이름, 이메일, 비밀번호)
- * @description 유저 정보를 생성, 비밀번호는 단방향 암호화
+ * @returns 유저 정보(id, email, name, role, updated_at)
+ * @description 유저 정보를 생성, 비밀번호는 단방향 해시 적용
  */
-export const createUser = async (params: LoginReqDto) => {
+export const createUser = async (params: LoginReqDto): Promise<User> => {
   const supabase = await getServerClient();
 
   const hashedPassword = await hashPassword(params.password);

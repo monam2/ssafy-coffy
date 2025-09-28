@@ -49,7 +49,7 @@ export const loginAction = async (
       email: String(created.email),
       name: String(created.name),
       role: String(created.role ?? "USER"),
-      updatedAt: String(created.updated_at ?? new Date().toISOString()),
+      updatedAt: String(created.updatedAt ?? new Date().toISOString()),
     };
 
     try {
@@ -59,12 +59,6 @@ export const loginAction = async (
     }
 
     return { ok: true, data: safeUser };
-  } else {
-    // 기존 사용자 PW 검증
-    const isValidPw = await verifyPassword(password, existingUser.password);
-    if (!isValidPw) {
-      return { ok: false, message: "비밀번호가 일치하지 않습니다." };
-    }
   }
 
   const safeUser: LoginResDto = {
@@ -72,7 +66,7 @@ export const loginAction = async (
     email: String(existingUser.email),
     name: String(existingUser.name),
     role: String(existingUser.role ?? "USER"),
-    updatedAt: String(existingUser.updated_at ?? new Date().toISOString()),
+    updatedAt: String(existingUser.updatedAt ?? new Date().toISOString()),
   };
 
   try {

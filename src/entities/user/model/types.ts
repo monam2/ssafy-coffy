@@ -7,6 +7,6 @@ export type User = {
   role?: string;
   isActive?: boolean;
   discordWebhookUrl?: string;
-  createdAt: DateString;
-  updatedAt: DateString;
+  createdAt?: DateString;
+  updatedAt?: DateString;
 };
