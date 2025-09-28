@@ -4,6 +4,10 @@ import bundleAnalyzer from "@next/bundle-analyzer";
 const nextConfig = {
   // assetPrefix: '.',
   transpilePackages: ["jotai-devtools"],
+  typescript: {
+    ignoreBuildErrors: false,
+    include: ["src/**/*"],
+  },
   images: {
     remotePatterns: [
       {
