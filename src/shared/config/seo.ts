@@ -49,7 +49,10 @@ const buildMetadata = (
     alternates: { canonical },
     icons: defaultMetaConfig.icons,
     openGraph: {
-      title: typeof title === "string" ? title : defaultMetaConfig.name,
+      title:
+        typeof title === "string"
+          ? title
+          : (title as any).default ?? defaultMetaConfig.name,
       description,
       url: canonical,
       siteName: defaultMetaConfig.name,

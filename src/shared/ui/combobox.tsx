@@ -45,7 +45,7 @@ export default function Combobox({ setClassNumber }: ComboboxProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[220px] --text-color text-base font-semibold"
+          className="w-[220px] text-base font-semibold"
         >
           {value
             ? classNumber.find((classNum) => classNum.value === value)?.label

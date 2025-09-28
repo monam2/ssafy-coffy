@@ -5,6 +5,7 @@ import {
   type Control,
   type FieldValues,
   type Path,
+  type ControllerProps,
 } from "react-hook-form";
 
 import { Input } from "@/shared/ui/input";
@@ -15,7 +16,7 @@ type Props<T extends FieldValues> = Omit<
 > & {
   control: Control<T>;
   name: Path<T>;
-  defaultValue?: any;
+  defaultValue?: ControllerProps<T>["defaultValue"];
 };
 
 const RHFTextInput = <T extends FieldValues>({
@@ -28,7 +29,7 @@ const RHFTextInput = <T extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      defaultValue={defaultValue as any}
+      defaultValue={defaultValue}
       render={({ field }) => <Input {...rest} {...field} />}
     />
   );
