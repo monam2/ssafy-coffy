@@ -29,14 +29,14 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
     else if (state?.fieldErrors?.password?.length) passwordRef.current?.focus();
 
     if (state?.ok) {
-      setUser(state.data as LoginUser);
+      setUser(state?.data as LoginUser);
       router.replace("/menu");
     }
   }, [state, router, setUser]);
 
   const nameInvalid = !!state?.fieldErrors?.name?.length;
-  const emailInvalid = !state?.fieldErrors?.email?.length;
-  const passwordInvalid = !state?.fieldErrors?.password?.length;
+  const emailInvalid = !!state?.fieldErrors?.email?.length;
+  const passwordInvalid = !!state?.fieldErrors?.password?.length;
 
   return (
     <>
@@ -55,7 +55,7 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
           />
           {nameInvalid && (
             <p className="text-red-500 text-sm mt-1">
-              {state.fieldErrors!.name![0]}
+              {state?.fieldErrors?.name?.[0]}
             </p>
           )}
         </div>
@@ -72,7 +72,7 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
           />
           {emailInvalid && (
             <p className="text-red-500 text-sm mt-1">
-              {state.fieldErrors!.email![0]}
+              {state?.fieldErrors?.email?.[0]}
             </p>
           )}
         </div>
@@ -90,11 +90,11 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
           />
           {passwordInvalid && (
             <p className="text-red-500 text-sm mt-1">
-              {state.fieldErrors!.password![0]}
+              {state?.fieldErrors?.password?.[0]}
             </p>
           )}
-          {state.message && (
-            <p className="text-red-500 text-sm">{state.message}</p>
+          {state?.message && (
+            <p className="text-red-500 text-sm">{state?.message}</p>
           )}
         </div>
 

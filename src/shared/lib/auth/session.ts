@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
 import { LoginUser } from "@/entities/user/model/atom";
 
-export const setUserSnapshot = async (user: LoginUser) => {
+export const setUserSnapshot = async (key: string, user: LoginUser) => {
   const cookieStore = await cookies();
-  cookieStore.set("auth_user", JSON.stringify(user), {
-    httpOnly: false,
+  cookieStore.set(key, JSON.stringify(user), {
+    httpOnly: true,
     sameSite: "lax",
     path: "/",
     secure: true,
