@@ -1,9 +1,7 @@
-import { User } from "@/entities/user/model/types";
-import { LoginReqDto, LoginResDto } from "@/feature/auth/api/dto";
+import { LoginReqDto } from "@/feature/auth/api/dto";
 
 import { hashPassword } from "@/shared/lib/auth/crypto";
 import { getServerClient } from "@/shared/config/supabase/server";
-import { PostgrestSingleResponse } from "@supabase/supabase-js";
 
 /** 유저 조회
  * @param email 이메일
@@ -16,7 +14,7 @@ export const findUserByEmail = async (email: string) => {
   const { data } = await supabase
     .schema("public")
     .from("users")
-    .select("id, email, name, role, password, updated_at")
+    .select("id, email, name, role, updated_at")
     .eq("email", email)
     .maybeSingle();
   return data;
