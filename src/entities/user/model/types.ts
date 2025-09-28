@@ -4,9 +4,9 @@ export type User = {
   id: string;
   name: string;
   email: string;
-  role: string;
-  isActive: boolean;
-  discordWebhookUrl: string;
+  role?: string;
+  isActive?: boolean;
+  discordWebhookUrl?: string;
   createdAt: DateString;
   updatedAt: DateString;
 };
