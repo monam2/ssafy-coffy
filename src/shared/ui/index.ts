@@ -1,7 +1,14 @@
 export { Button } from "./button";
 export { Input } from "./input";
 
-export { Card, CardContent, CardHeader, CardTitle } from "./card";
+export {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+  CardDescription,
+} from "./card";
 export { Badge } from "./badge";
 export { Alert, AlertTitle, AlertDescription } from "./alert";
 export { Popover, PopoverTrigger, PopoverContent } from "./popover";
