@@ -1,5 +1,3 @@
-"use client";
-
 import QueryProvider from "./QueryProvider";
 import ThemeProvider from "./ThemeProvider";
 
