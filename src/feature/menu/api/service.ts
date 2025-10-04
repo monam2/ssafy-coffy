@@ -13,7 +13,8 @@ export const getMenuList = async (
     .from("menus")
     .select(
       "id, name, price, img, only_ice, category_id, is_active, is_sold_out"
-    );
+    )
+    .order("id", { ascending: true });
 
   // Like 검색 조건 -> 메뉴명(name)
   if (name && name.trim()) {
