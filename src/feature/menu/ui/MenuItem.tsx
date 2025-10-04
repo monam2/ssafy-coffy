@@ -5,10 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/shared/ui";
 
 type MenuItemProps = {
   menu: Menu;
+  isPriority: boolean;
   footer: React.ReactNode;
 };
 
-const MenuItem = ({ menu, footer }: MenuItemProps) => {
+const MenuItem = ({ menu, isPriority, footer }: MenuItemProps) => {
   return (
     <Card className="w-[300px] m-auto px-4 dark:bg-gray-200 dark:border-gray-200 rounded-xl shadow-xl">
       {/* 메뉴 이미지 */}
@@ -18,7 +19,7 @@ const MenuItem = ({ menu, footer }: MenuItemProps) => {
             src={menu.img}
             alt={menu.name}
             fill
-            priority
+            priority={isPriority}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="rounded-2xl object-cover"
           />

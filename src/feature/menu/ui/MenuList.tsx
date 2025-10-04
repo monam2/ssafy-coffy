@@ -22,10 +22,11 @@ const MenuList = async () => {
 
   return (
     <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-2 gap-y-10">
-      {menus.map((menu) => (
+      {menus.map((menu, index) => (
         <MenuItem
           key={menu.id}
           menu={menu}
+          isPriority={index < 8} // 초기 이미지(8개)를 우선 로딩
           footer={<MenuBuyButtons menu={menu} />}
         />
       ))}
