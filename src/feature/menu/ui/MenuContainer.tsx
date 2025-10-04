@@ -1,11 +1,12 @@
-"use client";
-
-import useMenuList from "../model/hooks/useMenuList";
+import MenuList from "@/feature/menu/ui/MenuList";
 
 const MenuContainer = () => {
-  const { menuList } = useMenuList();
-
-  return <div>{JSON.stringify(menuList)}</div>;
+  return (
+    <>
+      {/* <CategoryBar /> */}
+      <MenuList />
+    </>
+  );
 };
 
 export default MenuContainer;
