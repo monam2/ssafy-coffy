@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import buildMetadata from "@/shared/config/seo";
+import { buildMetadata } from "@/shared/config";
 import LoginForm from "@/feature/auth/ui/LoginForm";
 
 export const metadata = buildMetadata({

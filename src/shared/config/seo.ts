@@ -13,7 +13,7 @@ const toAbsoluteUrl = (path?: string) => {
  * @param input - title, description, canonicalPath, ogImage, robots, keywords, other
  * @returns 메타데이터 객체
  */
-const buildMetadata = (
+export const buildMetadata = (
   input: {
     title?: string | Metadata["title"];
     description?: string;
@@ -62,5 +62,3 @@ const buildMetadata = (
     other: input.other,
   };
 };
-
-export default buildMetadata;
