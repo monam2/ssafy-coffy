@@ -8,7 +8,7 @@ import { getMenuListAtServer } from "@/feature/menu/api/service.server";
 
 const MenuList = async () => {
   const dto = await getMenuListAtServer();
-  const menus: Menu[] = dto ? arrDtoToArrType(dto) : [];
+  const menus: Menu[] = arrDtoToArrType(dto);
 
   if (!menus.length) {
     return (
