@@ -50,7 +50,7 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
             placeholder="이름"
             aria-invalid={nameInvalid}
             className={`w-full text-center ${
-              nameInvalid ? "focus:ring-red-500" : ""
+              nameInvalid && "focus:ring-red-500"
             }`}
           />
           {nameInvalid && (
@@ -67,7 +67,7 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
             placeholder="이메일"
             aria-invalid={emailInvalid}
             className={`w-full text-center ${
-              emailInvalid ? "focus:ring-red-500" : ""
+              emailInvalid && "focus:ring-red-500"
             }`}
           />
           {emailInvalid && (
@@ -85,7 +85,7 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
             placeholder="비밀번호"
             aria-invalid={passwordInvalid}
             className={`w-full text-center ${
-              passwordInvalid ? "focus:ring-red-500" : ""
+              passwordInvalid && "focus:ring-red-500"
             }`}
           />
           {passwordInvalid && (
