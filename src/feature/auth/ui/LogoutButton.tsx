@@ -49,6 +49,7 @@ function SubmitButton({
       size="sm"
       type="submit"
       disabled={disabled || pending}
+      className="dark:bg-gray-200 dark:text-gray-500 border-none"
     >
       {pending ? <Loader2 className="w-4 h-4 animate-spin" /> : children}
     </Button>
