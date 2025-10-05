@@ -2,15 +2,14 @@ import bundleAnalyzer from "@next/bundle-analyzer";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // assetPrefix: '.',
   transpilePackages: ["jotai-devtools"],
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "composecoffee.com",
+        hostname: "d38pr31376by9o.cloudfront.net",
         port: "",
-        pathname: "/files/thumbnails/**",
+        pathname: "/**",
       },
     ],
   },
