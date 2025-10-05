@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { LoginResDto } from "@/feature/auth/api/dto";
 import { loginSchema } from "@/feature/auth/model/schema";
 import { LoginState } from "@/feature/auth/model/types";
-import { findUserByEmail, createUser } from "@/feature/auth/api/service";
+import { findUserByEmail, createUser } from "@/feature/auth/api/service.server";
 import { setUserSnapshot } from "@/shared/lib/auth/session";
 
 const COOKIE_NAME = "auth_user";
