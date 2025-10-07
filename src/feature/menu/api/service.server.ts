@@ -11,7 +11,10 @@ export async function getMenuListAtServer(
   params?: GetMenuListReqDto
 ): Promise<GetMenuListResDto[]> {
   const supabase = await getServerClient();
+
   const name = params?.name?.trim();
+  const categoryId = params?.categoryId;
+
   let query = supabase
     .from("menus")
     .select(
@@ -22,6 +25,10 @@ export async function getMenuListAtServer(
   if (name) {
     const pattern = `%${name.replace(/[%_]/g, "\\$&")}%`;
     query = query.ilike("name", pattern);
+  }
+
+  if (categoryId) {
+    query = query.eq("category_id", categoryId);
   }
 
   const { data, error } = await query;
