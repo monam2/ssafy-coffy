@@ -1,11 +1,11 @@
 import MenuList from "@/feature/menu/ui/MenuList";
 import CategoryTab from "@/feature/category/ui/CategoryTab";
 
-interface MenuContainerProps {
+interface MenuSectionProps {
   categoryId?: number;
 }
 
-const MenuContainer = ({ categoryId }: MenuContainerProps) => {
+const MenuSection = ({ categoryId }: MenuSectionProps) => {
   return (
     <div className="flex flex-col gap-4 m-2">
       <CategoryTab selectedCategoryId={categoryId} />
@@ -14,4 +14,4 @@ const MenuContainer = ({ categoryId }: MenuContainerProps) => {
   );
 };
 
-export default MenuContainer;
+export default MenuSection;

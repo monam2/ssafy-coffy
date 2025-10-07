@@ -1,4 +1,4 @@
-import MenuContainer from "@/feature/menu/ui/MenuContainer";
+import MenuSection from "@/widget/menu/ui/MenuSection";
 import { parseCategoryIdParams } from "@/shared/lib/category/validation";
 
 interface MenuPageProps {
@@ -9,7 +9,7 @@ const MenuPage = async ({ searchParams }: MenuPageProps) => {
   const { categoryId } = await searchParams;
   const parsedCateId = parseCategoryIdParams(categoryId);
 
-  return <MenuContainer categoryId={parsedCateId} />;
+  return <MenuSection categoryId={parsedCateId} />;
 };
 
 export default MenuPage;
