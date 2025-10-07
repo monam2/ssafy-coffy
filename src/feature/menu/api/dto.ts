@@ -3,6 +3,7 @@ import { z } from "zod";
 /** 메뉴 리스트 요청 스키마 */
 export const getMenuListReqDtoSchema = z.object({
   name: z.string().optional(),
+  categoryId: z.number().optional(),
 });
 
 export type GetMenuListReqDto = z.infer<typeof getMenuListReqDtoSchema>;

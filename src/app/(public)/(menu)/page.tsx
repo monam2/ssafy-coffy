@@ -1,22 +1,15 @@
-import {
-  dehydrate,
-  QueryClient,
-  HydrationBoundary,
-} from "@tanstack/react-query";
+import MenuSection from "@/widget/menu/ui/MenuSection";
+import { parseCategoryIdParams } from "@/shared/lib/category/validation";
 
-import MenuContainer from "@/feature/menu/ui/MenuContainer";
-import { prefetchMenuListAtServer } from "@/feature/menu/model/query/queries.server";
+interface MenuPageProps {
+  searchParams: Promise<{ categoryId?: string }>;
+}
 
-const MenuPage = async () => {
-  const qc = new QueryClient();
-  await prefetchMenuListAtServer(qc);
-  const state = dehydrate(qc);
+const MenuPage = async ({ searchParams }: MenuPageProps) => {
+  const { categoryId } = await searchParams;
+  const parsedCateId = parseCategoryIdParams(categoryId);
 
-  return (
-    <HydrationBoundary state={state}>
-      <MenuContainer />
-    </HydrationBoundary>
-  );
+  return <MenuSection categoryId={parsedCateId} />;
 };
 
 export default MenuPage;

@@ -6,11 +6,17 @@ import { arrDtoToArrType } from "@/feature/menu/model/mapper";
 import MenuBuyButtons from "@/feature/menu/ui/MenuBuyButtons";
 import { getMenuListAtServer } from "@/feature/menu/api/service.server";
 
-const MenuList = async () => {
-  const dto = await getMenuListAtServer();
-  const menus: Menu[] = arrDtoToArrType(dto);
+import { isEmpty } from "@/shared/utils/isEmpty";
 
-  if (!menus.length) {
+interface MenuListProps {
+  categoryId?: number;
+}
+
+const MenuList = async ({ categoryId }: MenuListProps) => {
+  const result = await getMenuListAtServer({ categoryId });
+  const menus: Menu[] = arrDtoToArrType(result);
+
+  if (isEmpty(menus)) {
     return (
       <main className="flex flex-col justify-center items-center h-full">
         <section className="w-full h-32 justify-center flex items-center text-4xl text-gray-400 opacity-70 font-[BitBit]">

@@ -5,7 +5,8 @@ import { getBrowserClient } from "@/shared/config/supabase/client";
 export const getMenuList = async (
   params?: GetMenuListReqDto
 ): Promise<GetMenuListResDto[]> => {
-  const { name } = params || {};
+  const name = params?.name?.trim();
+  const categoryId = params?.categoryId;
 
   const supabase = getBrowserClient();
 
@@ -16,10 +17,13 @@ export const getMenuList = async (
     )
     .order("id", { ascending: true });
 
-  // Like 검색 조건 -> 메뉴명(name)
-  if (name && name.trim()) {
-    const pattern = `%${name.trim().replace(/[%_]/g, "\\$&")}%`;
+  if (name) {
+    const pattern = `%${name.replace(/[%_]/g, "\\$&")}%`;
     query = query.ilike("name", pattern);
+  }
+
+  if (categoryId) {
+    query = query.eq("category_id", categoryId);
   }
 
   const { data, error } = await query;
