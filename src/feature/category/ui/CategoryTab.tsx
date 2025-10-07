@@ -6,7 +6,7 @@ import { getCategoryList } from "@/feature/category/api/service.server";
 import { isEmpty } from "@/shared/utils";
 
 interface CategoryTabProps {
-  selectedCategoryId: number | null;
+  selectedCategoryId?: number;
 }
 
 const CategoryTab = async ({ selectedCategoryId }: CategoryTabProps) => {
@@ -16,20 +16,24 @@ const CategoryTab = async ({ selectedCategoryId }: CategoryTabProps) => {
   if (isEmpty(categories)) return null;
 
   // [전체] 탭 선택
-  const isAllSelected = selectedCategoryId === 0 || selectedCategoryId === null;
+  const isAllSelected = !selectedCategoryId;
 
   return (
     <div
       className="w-full px-3 md:justify-center justify-start flex gap-4 overflow-x-scroll whitespace-nowrap"
       style={{ scrollbarWidth: "none" }}
     >
-      <CategoryTabItem href={`?categoryId=${0}`} active={isAllSelected}>
+      <CategoryTabItem href="?" active={isAllSelected}>
         전체
       </CategoryTabItem>
       {categories.map((c) => {
         const isSelected = c.id === selectedCategoryId;
         return (
-          <CategoryTabItem href={`?categoryId=${c.id}`} active={isSelected}>
+          <CategoryTabItem
+            key={c.id}
+            href={`?categoryId=${c.id}`}
+            active={isSelected}
+          >
             {c.name}
           </CategoryTabItem>
         );

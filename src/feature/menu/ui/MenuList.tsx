@@ -9,13 +9,11 @@ import { getMenuListAtServer } from "@/feature/menu/api/service.server";
 import { isEmpty } from "@/shared/utils/isEmpty";
 
 interface MenuListProps {
-  categoryId?: string;
+  categoryId?: number;
 }
 
 const MenuList = async ({ categoryId }: MenuListProps) => {
-  const result = await getMenuListAtServer({
-    categoryId: categoryId ? Number(categoryId) : undefined,
-  });
+  const result = await getMenuListAtServer({ categoryId });
   const menus: Menu[] = arrDtoToArrType(result);
 
   if (isEmpty(menus)) {
