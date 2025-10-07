@@ -18,7 +18,7 @@ export const getMenuList = async (
     .order("id", { ascending: true });
 
   if (name) {
-    const pattern = `%${name.trim().replace(/[%_]/g, "\\$&")}%`;
+    const pattern = `%${name.replace(/[%_]/g, "\\$&")}%`;
     query = query.ilike("name", pattern);
   }
 
