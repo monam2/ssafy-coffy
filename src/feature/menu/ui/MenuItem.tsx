@@ -1,6 +1,7 @@
 import Image from "next/image";
 
-import type { Menu } from "@/feature/menu/model/types";
+import { Menu } from "@/entities/menu/model/types";
+
 import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/shared/ui";
 
 type MenuItemProps = {

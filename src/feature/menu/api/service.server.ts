@@ -1,4 +1,3 @@
-// prefetch를 위한 server 서비스 레이어(supabase client/server 구분으로 인해)
 import "server-only";
 
 import { getServerClient } from "@/shared/config/supabase/server";

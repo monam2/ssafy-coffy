@@ -1,7 +1,8 @@
 import "server-only";
 
+import type { Menu } from "@/entities/menu/model/types";
+
 import MenuItem from "@/feature/menu/ui/MenuItem";
-import type { Menu } from "@/feature/menu/model/types";
 import { arrDtoToArrType } from "@/feature/menu/model/mapper";
 import MenuBuyButtons from "@/feature/menu/ui/MenuBuyButtons";
 import { getMenuListAtServer } from "@/feature/menu/api/service.server";

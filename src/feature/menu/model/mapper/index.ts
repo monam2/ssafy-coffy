@@ -1,8 +1,8 @@
 /* 
 menu res dto를 도메인 타입으로 매핑
 */
+import type { Menu } from "@/entities/menu/model/types";
 import { GetMenuListResDto } from "@/feature/menu/api/dto";
-import { Menu } from "@/feature/menu/model/types";
 
 /** DTO -> 도메인 타입 매핑 */
 export const menuDtoToType = (data: GetMenuListResDto): Menu =>

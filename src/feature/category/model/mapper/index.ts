@@ -1,4 +1,4 @@
-import { Category } from "@/feature/category/model/types";
+import type { Category } from "@/entities/category/model/types";
 import { GetCategoryListResDto } from "@/feature/category/api/dto";
 
 export const categoryDtoToType = (data: GetCategoryListResDto): Category =>
