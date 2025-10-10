@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "@/entities/menu/model/types";
+import type { Menu } from "@/entities/menu/model/types";
 
 import { Button } from "@/shared/ui";
 
