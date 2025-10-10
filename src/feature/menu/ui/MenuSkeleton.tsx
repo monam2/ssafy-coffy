@@ -1,10 +1,9 @@
-import { Card, CardContent, CardHeader } from "@/shared/ui";
-import { Skeleton } from "@/shared/ui";
+import { Card, CardContent, CardHeader, Skeleton } from "@/shared/ui";
 
-export default function MenuSkeleton() {
+const MenuSkeleton = ({ length = 8 }: { length?: number }) => {
   return (
     <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-x-5 gap-y-10">
-      {Array.from({ length: 8 }).map((_, i) => (
+      {Array.from({ length }).map((_, i) => (
         <Card
           key={i}
           className="w-[300px] m-auto px-4 dark:bg-gray-400 dark:border-none"
@@ -28,4 +27,6 @@ export default function MenuSkeleton() {
       ))}
     </main>
   );
-}
+};
+
+export default MenuSkeleton;
