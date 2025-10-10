@@ -5,24 +5,33 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --ff-pretendard: var(--font-pretendard), system-ui, sans-serif;
+    --ff-moyamoya: var(--font-moyamoya), var(--font-pretendard), system-ui,
+      sans-serif;
+    --ff-bitbit: var(--font-bitbit), var(--font-pretendard), system-ui,
+      sans-serif;
+  }
+}
+
+/* tailwind 유틸리티 레이어에 폰트 변수명을 넣기 */
+@layer utilities {
+  .font-\[Pretendard\] {
+    font-family: var(--ff-pretendard);
+  }
+  .font-\[Moyamoya\] {
+    font-family: var(--ff-moyamoya);
+  }
+  .font-\[BitBit\] {
+    font-family: var(--ff-bitbit);
+  }
+}
+
 :root {
   --text-color-light: #000000;
   --text-color-dark: #ffffff;
   --text-color-lightblue: #7eaffe;
-
-  --ff-pretendard: var(--font-pretendard), system-ui, sans-serif;
-  --ff-moyamoya: var(--font-moyamoya), var(--font-pretendard), system-ui,
-    sans-serif;
-  --ff-bitbit: var(--font-bitbit), var(--font-pretendard), system-ui, sans-serif;
-}
-.font-\[Pretendard\] {
-  font-family: var(--ff-pretendard);
-}
-.font-\[Moyamoya\] {
-  font-family: var(--ff-moyamoya);
-}
-.font-\[BitBit\] {
-  font-family: var(--ff-bitbit);
 }
 
 [data-theme="dark"] {
