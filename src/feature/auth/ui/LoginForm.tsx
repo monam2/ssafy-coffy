@@ -30,7 +30,7 @@ const LoginForm = ({ header }: { header: React.ReactNode }) => {
 
     if (state?.ok) {
       setUser(state?.data as LoginUser);
-      router.replace("/menu");
+      router.replace("/");
     }
   }, [state, router, setUser]);
 

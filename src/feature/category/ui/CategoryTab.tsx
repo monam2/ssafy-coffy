@@ -1,4 +1,5 @@
-import { Category } from "@/feature/category/model/types";
+import type { Category } from "@/entities/category/model/types";
+
 import { arrDtoToArrType } from "@/feature/category/model/mapper";
 import CategoryTabItem from "@/feature/category/ui/CategoryTabItem";
 import { getCategoryList } from "@/feature/category/api/service.server";
@@ -13,10 +14,9 @@ const CategoryTab = async ({ selectedCategoryId }: CategoryTabProps) => {
   const categoryList = await getCategoryList();
   const categories: Category[] = arrDtoToArrType(categoryList);
 
-  if (isEmpty(categories)) return null;
+  const isAllSelected = !selectedCategoryId; // [전체] 탭 선택
 
-  // [전체] 탭 선택
-  const isAllSelected = !selectedCategoryId;
+  if (isEmpty(categories)) return null;
 
   return (
     <div

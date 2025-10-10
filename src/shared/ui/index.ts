@@ -24,5 +24,6 @@ export {
   DialogTitle,
   DialogDescription,
 } from "./dialog";
+export { Skeleton } from "./skeleton";
 
 export { default as RHFTextInput } from "./rhf/RHFTextInput";

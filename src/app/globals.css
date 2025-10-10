@@ -1,32 +1,31 @@
 /* styles/globals.css */
+@import "react-toastify/dist/ReactToastify.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import 'react-toastify/dist/ReactToastify.css';
 
-
-@font-face {
-  font-family: "Moyamoya";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/Cafe24Moyamoya-Regular-v1.0.woff2")
-    format("woff2");
-  font-weight: normal;
-  font-style: normal;
+@layer base {
+  :root {
+    --ff-pretendard: var(--font-pretendard), system-ui, sans-serif;
+    --ff-moyamoya: var(--font-moyamoya), var(--font-pretendard), system-ui,
+      sans-serif;
+    --ff-bitbit: var(--font-bitbit), var(--font-pretendard), system-ui,
+      sans-serif;
+  }
 }
 
-@font-face {
-  font-family: "Pretendard";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
-    format("woff");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "BitBit";
-  font-style: normal;
-  font-weight: 400;
-  src: url("//cdn.df.nexon.com/img/common/font/DNFBitBitv2.otf")
-    format("opentype");
+/* tailwind 유틸리티 레이어에 폰트 변수명을 넣기 */
+@layer utilities {
+  .font-\[Pretendard\] {
+    font-family: var(--ff-pretendard);
+  }
+  .font-\[Moyamoya\] {
+    font-family: var(--ff-moyamoya);
+  }
+  .font-\[BitBit\] {
+    font-family: var(--ff-bitbit);
+  }
 }
 
 :root {

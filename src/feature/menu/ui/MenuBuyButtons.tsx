@@ -1,7 +1,8 @@
 "use client";
 
+import type { Menu } from "@/entities/menu/model/types";
+
 import { Button } from "@/shared/ui";
-import type { Menu } from "@/feature/menu/model/types";
 
 const MenuBuyButtons = ({ menu }: { menu: Menu }) => {
   const disabledAll = menu.isSoldOut;
